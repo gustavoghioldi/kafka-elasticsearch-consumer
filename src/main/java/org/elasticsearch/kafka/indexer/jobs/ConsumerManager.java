@@ -36,18 +36,18 @@ public class ConsumerManager {
     private static final Logger logger = LoggerFactory.getLogger(ConsumerManager.class);
     private static final String KAFKA_CONSUMER_THREAD_NAME_FORMAT = "kafka-elasticsearch-consumer-thread-%d";
 
-    @Value("${kafka.consumer.source.topic:testTopic}")
+    @Value("${kafka.consumer.source.topic:BSA_TRANSACTION}")
     private String kafkaTopic;
     @Value("${kafka.consumer.group.name:kafka-elasticsearch-consumer}")
     private String consumerGroupName;
     @Value("${application.id:instance1}")
     private String consumerInstanceName;
-    @Value("${kafka.consumer.brokers.list:localhost:9092}")
+    @Value("${kafka.consumer.brokers.list:marathon-lb.inf.marathon-bsa.mesos:20027}")
     private String kafkaBrokersList;
-    @Value("${kafka.consumer.session.timeout.ms:10000}")
+    @Value("${kafka.consumer.session.timeout.ms:100000}")
     private int consumerSessionTimeoutMs;
     // interval in MS to poll Kafka brokers for messages, in case there were no messages during the previous interval
-    @Value("${kafka.consumer.poll.interval.ms:10000}")
+    @Value("${kafka.consumer.poll.interval.ms:100000}")
     private long kafkaPollIntervalMs;
     // Max number of bytes to fetch in one poll request PER partition
     // default is 1M = 1048576
@@ -58,7 +58,7 @@ public class ConsumerManager {
     @Value("${is.perf.reporting.enabled:false}")
     private boolean isPerfReportingEnabled;
 
-    @Value("${kafka.consumer.pool.count:3}")
+    @Value("${kafka.consumer.pool.count:1}")
     private int kafkaConsumerPoolCount;
 
     @Autowired
@@ -142,20 +142,25 @@ public class ConsumerManager {
     }
 
     private void determineOffsetForAllPartitionsAndSeek() {
+        logger.info("determineOffsetForAllPartitionsAndSeek");
         KafkaConsumer consumer = new KafkaConsumer<>(kafkaProperties);
+        logger.info("se creo un nuevo consumer!");
         consumer.subscribe(Arrays.asList(kafkaTopic));
-
+        logger.info("se suscribio al topic: "+kafkaTopic);
         //Make init poll to get assigned partitions
-        consumer.poll(kafkaPollIntervalMs);
+        //consumer.poll(kafkaPollIntervalMs);
         Set<TopicPartition> assignedTopicPartitions = consumer.assignment();
-
+       
         //apply start offset options to partitions specified in 'consumer-start-options.config' file
+        
         for (TopicPartition topicPartition : assignedTopicPartitions) {
+            
             ConsumerStartOption startOption = consumerStartOptions.get(topicPartition.partition());
             long offsetBeforeSeek = consumer.position(topicPartition);
             if (startOption == null) {
                 startOption = consumerStartOptions.get(ConsumerStartOption.DEFAULT);
             }
+            logger.info("switch :"+startOption.getStartFrom());
             switch (startOption.getStartFrom()) {
                 case CUSTOM:
                     consumer.seek(topicPartition, startOption.getStartOffset());

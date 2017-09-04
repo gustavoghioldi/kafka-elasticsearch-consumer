@@ -30,9 +30,9 @@ public class ElasticSearchClientService {
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchClientService.class);
     public static final String CLUSTER_NAME = "cluster.name";
 
-    @Value("${elasticsearch.cluster.name:elasticsearch}")
+    @Value("${elasticsearch.cluster.name:MYCLUSTER}")
     private String esClusterName;
-    @Value("#{'${elasticsearch.hosts.list:localhost:9300}'.split(',')}")
+    @Value("#{'${elasticsearch.hosts.list:192.168.74.23:20036}'.split(',')}")
     private List<String> esHostPortList;
     // sleep time in ms between attempts to index data into ES again
     @Value("${elasticsearch.indexing.retry.sleep.ms:10000}")

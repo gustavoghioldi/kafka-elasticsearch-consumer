@@ -29,11 +29,13 @@ public class SimpleMessageHandlerImpl implements IMessageHandler {
 	@Override
 	public String transformMessage(String inputMessage, Long offset) throws Exception {
 		// do not do any transformations for this scenario - just return the message as is
+		logger.info("transformMessage...->"+inputMessage);
 		return inputMessage;
 	}
 
 	@Override
 	public void addMessageToBatch(String inputMessage) throws Exception {
+		logger.info("addMessageToBatch...-->"+inputMessage);
 		String eventUUID = null; // we don't need a UUID for this simple scenario
 		String routingValue = null; // we don't need routing for this simple scenario		
 		elasticSearchBatchService.addEventToBulkRequest(
@@ -42,6 +44,7 @@ public class SimpleMessageHandlerImpl implements IMessageHandler {
 
 	@Override
 	public void postToElasticSearch() throws InterruptedException, IndexerESRecoverableException, IndexerESNotRecoverableException {
+		logger.info("postToElasticSearch...");
 		elasticSearchBatchService.postToElasticSearch();
 	}
 }

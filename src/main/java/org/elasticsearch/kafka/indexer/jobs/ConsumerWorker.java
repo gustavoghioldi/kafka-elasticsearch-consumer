@@ -58,7 +58,7 @@ public class ConsumerWorker implements Runnable {
 				int numMessagesInBatch = 0;
 				long offsetOfNextBatch = 0;
 
-				logger.debug("consumerId={}; about to call consumer.poll() ...", consumerId);
+				logger.info("consumerId={}; about to call consumer.poll() ...", consumerId);
 				ConsumerRecords<String, String> records = consumer.poll(pollIntervalMs);
 				Map<Integer, Long> partitionOffsetMap = new HashMap<>();
 
@@ -70,7 +70,7 @@ public class ConsumerWorker implements Runnable {
 					data.put("offset", record.offset());
 					data.put("value", record.value());
 
-					logger.debug("consumerId={}; recieved record: {}", consumerId, data);
+					logger.info("consumerId={}; recieved record: {}", consumerId, data);
 					if (isPollFirstRecord) {
 						isPollFirstRecord = false;
 						logger.info("Start offset for partition {} in this poll : {}", record.partition(),
