@@ -3,12 +3,12 @@
 
 # kafka-elasticsearch-standalone-GHI-consumer!
 
-## Arquitectura of the kafka-elasticsearch-standalone-GHI-consumer [indexer]
+## Arquitectura de kafka-elasticsearch-standalone-GHI-consumer [indexer]
 
-![](img/IndexerV2Design.jpg)
+KAFKA--> kafka-elasticsearch-standalone-GHI-consumer --> ElasticSearch
 
 
-# Introduction
+# Introduccion
 
 ### **Kafka Standalone GHI Consumer [Indexer] lee mensajes de Kafka los procesa y los persiste en  ElasticSearch.**
 
