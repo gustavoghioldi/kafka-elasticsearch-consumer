@@ -36,7 +36,7 @@ public class ConsumerManager {
     private static final Logger logger = LoggerFactory.getLogger(ConsumerManager.class);
     private static final String KAFKA_CONSUMER_THREAD_NAME_FORMAT = "kafka-elasticsearch-consumer-thread-%d";
 
-    @Value("${kafka.consumer.source.topic:BSA_TRANSACTION}")
+    @Value("${kafka.consumer.source.topic:BVTP}")
     private String kafkaTopic;
     @Value("${kafka.consumer.group.name:kafka-elasticsearch-consumer}")
     private String consumerGroupName;

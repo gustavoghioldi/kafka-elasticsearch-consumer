@@ -10,6 +10,8 @@ import org.elasticsearch.kafka.indexer.service.ElasticSearchBatchService;
 import org.elasticsearch.kafka.indexer.service.IMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
  *
  */
 public class SimpleMessageHandlerImpl implements IMessageHandler {
+
+	private static final Logger logger = LoggerFactory.getLogger(SimpleMessageHandlerImpl.class);
 
 	@Autowired
 	private ElasticSearchBatchService elasticSearchBatchService = null;
